@@ -55,10 +55,10 @@ buildscript {
                 agp    : [
                         // https://developer.android.com/studio/releases/platforms
                         plugin       : '7.4.2', // using Gradle 7.6
-                        minSdk       : 24,      // Android 7
+                        minSdk       : 22,      // Android 7
                         compileSdk   : 30,      // Android 11
                         targetSdk    : 30,      // Android 11
-                        buildTools   : '28.0.2',
+                        buildTools   : '30.0.2',
                         gradleApi    : '7.4.2',
                         gradleTestKit: '7.4.2'
                 ],
