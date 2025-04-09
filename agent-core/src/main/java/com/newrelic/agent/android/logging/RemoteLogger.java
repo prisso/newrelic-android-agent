@@ -20,6 +20,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 
 public class RemoteLogger implements HarvestLifecycleAware, Logger {
@@ -62,11 +63,12 @@ public class RemoteLogger implements HarvestLifecycleAware, Logger {
     @Override
     public void logAttributes(Map<String, Object> attributes) {
         attributes = validator.validate(attributes);
-        String level = (String) attributes.getOrDefault(LogReporting.LOG_LEVEL_ATTRIBUTE, LogLevel.INFO.name());
+        String tmp = (String) attributes.get(LogReporting.LOG_LEVEL_ATTRIBUTE);
+        String level = tmp != null ? tmp : LogLevel.INFO.name();
         LogLevel logLevel = LogLevel.valueOf(level.toUpperCase());
 
         if (isLevelEnabled(logLevel)) {
-            String message = (String) attributes.getOrDefault(LogReporting.LOG_MESSAGE_ATTRIBUTE, null);
+            String message = (String) attributes.get(LogReporting.LOG_MESSAGE_ATTRIBUTE);
             appendToWorkingLogfile(logLevel, message, null, attributes);
         }
     }
@@ -74,11 +76,12 @@ public class RemoteLogger implements HarvestLifecycleAware, Logger {
     @Override
     public void logAll(Throwable throwable, Map<String, Object> attributes) {
         attributes = validator.validate(attributes);
-        String level = (String) attributes.getOrDefault(LogReporting.LOG_LEVEL_ATTRIBUTE, LogLevel.INFO.name());
+        String tmp = (String) attributes.get(LogReporting.LOG_LEVEL_ATTRIBUTE);
+        String level = tmp != null ? tmp : LogLevel.INFO.name();
         LogLevel logLevel = LogLevel.valueOf(level.toUpperCase());
 
         if (isLevelEnabled(logLevel)) {
-            String message = (String) attributes.getOrDefault(LogReporting.LOG_MESSAGE_ATTRIBUTE, null);
+            String message = (String) attributes.get(LogReporting.LOG_MESSAGE_ATTRIBUTE);
             message = validator.validate(message);
             appendToWorkingLogfile(LogLevel.valueOf(level.toUpperCase()), message, throwable, attributes);
         }
@@ -95,17 +98,17 @@ public class RemoteLogger implements HarvestLifecycleAware, Logger {
      * @link https://docs.newrelic.com/docs/logs/log-api/introduction-log-api/#simple-json
      */
     public void appendToWorkingLogfile(final LogLevel logLevel, final String message, final Throwable throwable, final Map<String, Object> attributes) {
-        if (!(LogReporting.isRemoteLoggingEnabled() && isLevelEnabled(logLevel))) {
-            return;
-        }
-
-        if (!AgentConfiguration.getInstance().getLogReportingConfiguration().isSampled()) {
-            return;
-        }
-
-        if ((null == message || message.isEmpty()) && (null == throwable) && (null == attributes || attributes.isEmpty())) {
-            return; // what's the point?
-        }
+//        if (!(LogReporting.isRemoteLoggingEnabled() && isLevelEnabled(logLevel))) {
+//            return;
+//        }
+//
+//        if (!AgentConfiguration.getInstance().getLogReportingConfiguration().isSampled()) {
+//            return;
+//        }
+//
+//        if ((null == message || message.isEmpty()) && (null == throwable) && (null == attributes || attributes.isEmpty())) {
+//            return; // what's the point?
+//        }
 
         final LogReporter logReporter = LogReporter.getInstance();
 

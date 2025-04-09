@@ -47,7 +47,7 @@ public class AEISessionMapper {
     }
 
     public AEISessionMeta get(int pid) {
-        return mapper.getOrDefault(pid, null);
+        return mapper.get(pid);
     }
 
     public String getSessionId(int pid) {

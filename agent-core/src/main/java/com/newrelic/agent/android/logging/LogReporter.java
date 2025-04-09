@@ -89,7 +89,7 @@ public class LogReporter extends PayloadReporter {
 
     static final String LOG_REPORTS_DIR = "newrelic/logReporting";      // root dir for local data files
     static final String LOG_FILE_MASK = "logdata%s.%s";                 // log data file name. suffix will indicate working state
-    static final Pattern LOG_FILE_REGEX = Pattern.compile("^(?<path>.*\\/" + LOG_REPORTS_DIR + ")\\/(?<file>logdata.*)\\.(?<extension>.*)$");
+    static final Pattern LOG_FILE_REGEX = Pattern.compile("^(.*\\/" + LOG_REPORTS_DIR + ")\\/(logdata.*)\\.(.*)$");
 
     static final AtomicReference<LogReporter> instance = new AtomicReference<>(null);
     static final ReentrantLock workingFileLock = new ReentrantLock();
@@ -797,7 +797,8 @@ public class LogReporter extends PayloadReporter {
      * @return
      */
     boolean isLogfileTypeOf(final File logDatafile, LogReportState state) {
-        return logFileNameAsParts(logDatafile).getOrDefault("extension", "").equals(state.extension);
+        String tmp = logFileNameAsParts(logDatafile).get("extension");
+        return (tmp != null ? tmp : "").equals(state.extension);
     }
 
     /**
@@ -808,8 +809,9 @@ public class LogReporter extends PayloadReporter {
      * @throws IOException
      */
     LogReportState typeOfLogfile(final File logDatafile) throws IOException {
-        String extension = logFileNameAsParts(logDatafile).getOrDefault("extension", "");
-        if (null == extension || extension.isEmpty()) {
+        String tmp = logFileNameAsParts(logDatafile).get("extension");
+        String extension = tmp != null ? tmp : "";
+        if (extension.isEmpty()) {
             throw new IOException("LogReporter:  Could not parse the log file name. " + logDatafile.getAbsolutePath());
         }
 

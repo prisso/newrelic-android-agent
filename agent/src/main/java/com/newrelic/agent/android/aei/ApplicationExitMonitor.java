@@ -339,11 +339,15 @@ public class ApplicationExitMonitor {
     }
 
     protected String getReasonAsString(int reason) {
-        return REASON_MAP.getOrDefault(reason, String.valueOf(reason));
+        String tmp = REASON_MAP.get(reason);
+        if (tmp == null) { tmp = String.valueOf(reason); }
+        return tmp;
     }
 
     protected String getImportanceAsString(int importance) {
-        return IMPORTANCE_MAP.getOrDefault(importance, String.valueOf(importance));
+        String tmp = IMPORTANCE_MAP.get(importance);
+        if (tmp == null) { tmp = String.valueOf(importance); }
+        return tmp;
     }
 
     List<File> getArtifacts() {

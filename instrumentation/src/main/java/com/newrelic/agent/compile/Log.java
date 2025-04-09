@@ -28,7 +28,8 @@ public class Log {
     final String name;
 
     public Log(Map<String, String> agentOptions) {
-        String logLevelOpt = agentOptions.getOrDefault("loglevel", Level.WARN.name());
+        String tmp = agentOptions.get("loglevel");
+        String logLevelOpt = tmp != null ? tmp : Level.WARN.name();
         logLevel = Level.valueOf(logLevelOpt);
         name = TAG;
     }

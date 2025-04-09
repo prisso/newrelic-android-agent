@@ -21,7 +21,8 @@ public abstract class Logger extends LegacyAbstractLogger {
 
     public Logger(Map<String, String> agentOptions) {
         super();
-        String logLevelOpt = agentOptions.getOrDefault("loglevel", Level.WARN.name());
+        String tmp = agentOptions.get("loglevel");
+        String logLevelOpt = tmp != null ? tmp : Log.Level.WARN.name();
         logLevel = Level.valueOf(logLevelOpt);
     }
 

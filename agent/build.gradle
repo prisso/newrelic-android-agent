@@ -30,6 +30,7 @@ android {
     defaultConfig {
         minSdkVersion project.versions.agp.minSdk
         targetSdkVersion project.versions.agp.targetSdk
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -45,6 +46,10 @@ android {
         if (variant.buildType.name != BuilderConstants.RELEASE) {
             variant.ignore = true
         }
+    }
+
+    compileOptions {
+        setCoreLibraryDesugaringEnabled(true)
     }
 
     lintOptions {
@@ -91,6 +96,7 @@ dependencies {
     compileOnly newrelic.deps.ndk
 
     compileOnly "androidx.navigation:navigation-compose:${project.versions.jetpack}"
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs_nio:2.1.5")
 
     testImplementation project(path: ':agent-core', configuration: 'fat')
     testImplementation fileTree(dir: 'libs', include: '*.jar')

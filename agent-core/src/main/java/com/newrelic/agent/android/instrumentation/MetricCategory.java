@@ -40,7 +40,7 @@ public enum MetricCategory {
         if (hashIndex >= 0) {
             methodName = fullMethodName.substring(hashIndex + 1);
         }
-
-        return methodMap.getOrDefault(methodName, MetricCategory.NONE);
+        MetricCategory tmp = methodMap.get(methodName);
+        return tmp != null ? tmp : MetricCategory.NONE;
     }
 }

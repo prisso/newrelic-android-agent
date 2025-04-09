@@ -180,7 +180,8 @@ public abstract class LogReporting {
         public void logAttributes(Map<String, Object> attributes) {
             attributes = validator.validate(attributes);
 
-            String logLevel = (String) attributes.getOrDefault("level", LogLevel.INFO.name());
+            String tmp = (String) attributes.get("level");
+            String logLevel = tmp != null ? tmp : LogLevel.INFO.name();
             Map<String, Object> finalAttributes = attributes;
             String mapAsString = attributes.keySet().stream()
                     .map(key -> key + "=" + finalAttributes.get(key))
@@ -193,7 +194,8 @@ public abstract class LogReporting {
         public void logAll(Throwable throwable, Map<String, Object> attributes) {
             attributes = validator.validate(attributes);
 
-            String logLevel = (String) attributes.getOrDefault("level", LogLevel.INFO.name());
+            String tmp = (String) attributes.get("level");
+            String logLevel = tmp != null ? tmp : LogLevel.INFO.name();
             Map<String, Object> finalAttributes = attributes;
             String mapAsString = finalAttributes.keySet().stream()
                     .map(key -> key + "=" + finalAttributes.get(key))
